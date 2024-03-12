@@ -5,14 +5,14 @@ namespace Minerals.AutoInterfaces
     {
         public void Initialize(IncrementalGeneratorInitializationContext context)
         {
-            var defines = context.SyntaxProvider.ForAttributeWithMetadataName
+            var generates = context.SyntaxProvider.ForAttributeWithMetadataName
             (
                 "Minerals.AutoInterfaces.GenerateInterfaceAttribute",
                 static (x, _) => true, //TODO: Optimize this only for public members
                 static (x, _) => x
             );
 
-            context.RegisterSourceOutput(defines, static (ctx, element) =>
+            context.RegisterSourceOutput(generates, static (ctx, element) =>
             {
                 string fileName = $"I{GeneratorHelpers.GetClassName(element)}.g.cs";
                 ctx.AddSource(fileName, BuildInterface(element));

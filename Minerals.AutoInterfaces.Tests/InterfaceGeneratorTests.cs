@@ -5,7 +5,7 @@ namespace Minerals.AutoInterfaces.Tests
         [Fact]
         public Task ClassWithoutNamespace_ShouldGenerate()
         {
-            string source = """
+            const string source = """
             public class TestClass
             {
                 public int Property1 { get; set; }

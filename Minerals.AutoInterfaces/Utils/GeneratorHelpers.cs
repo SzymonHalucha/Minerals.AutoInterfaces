@@ -7,13 +7,6 @@ namespace Minerals.AutoInterfaces.Utils
             return ((ClassDeclarationSyntax)context.TargetNode).Identifier.ValueText;
         }
 
-        public static string GetClassFullName(GeneratorAttributeSyntaxContext context)
-        {
-            var clsName = GetClassName(context);
-            var nsName = context.Attributes.First().AttributeClass?.ContainingNamespace.Name;
-            return nsName != null ? $"{nsName}.{clsName}" : clsName;
-        }
-
         public static SyntaxList<UsingDirectiveSyntax> GetAllUsingDirectives(GeneratorAttributeSyntaxContext context)
         {
             var usings = context.TargetNode
