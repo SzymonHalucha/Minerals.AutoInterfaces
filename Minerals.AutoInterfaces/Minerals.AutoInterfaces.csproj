@@ -5,40 +5,50 @@
         <ImplicitUsings>disable</ImplicitUsings>
         <LangVersion>12</LangVersion>
         <Nullable>enable</Nullable>
+        <IsRoslynComponent>true</IsRoslynComponent>
+        <EnforceExtendedAnalyzerRules>true</EnforceExtendedAnalyzerRules>
+        <RootNamespace>Minerals.AutoInterfaces</RootNamespace>
     </PropertyGroup>
 
     <PropertyGroup>
-        <IsPackable>true</IsPackable>
-        <IsRoslynComponent>true</IsRoslynComponent>
-        <EnforceExtendedAnalyzerRules>true</EnforceExtendedAnalyzerRules>
-        <ProduceReferenceAssembly>true</ProduceReferenceAssembly>
-        <RootNamespace>Minerals.AutoInterfaces</RootNamespace>
-
+        <Version>0.1.1</Version>
         <Title>AutoInterfaces</Title>
         <Authors>Szymon Hałucha</Authors>
-        <Version>0.1.1</Version>
         <Product>AutoInterfaces</Product>
         <Description>Package for automatic interface generation using incremental generator</Description>
         <Copyright>Copyright © Szymon Hałucha 2024</Copyright>
+    </PropertyGroup>
 
+    <PropertyGroup>
         <PackageId>Minerals.AutoInterfaces</PackageId>
-        <PackageReadmeFile>README.md</PackageReadmeFile>
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
-        <PackageTags>interface, generator, attribute</PackageTags>
         <PackageProjectUrl>https://github.com/SzymonHalucha/Minerals.AutoInterfaces</PackageProjectUrl>
+        <PackageTags>interface, interfaces, generator, generation, attribute</PackageTags>
+        <PackageReadmeFile>README.md</PackageReadmeFile>
+        <PackageReleaseNotes></PackageReleaseNotes>
+        <IsPackable>true</IsPackable>
+    </PropertyGroup>
 
+    <PropertyGroup>
+        <RepositoryUrl>https://github.com/SzymonHalucha/Minerals.AutoInterfaces.git</RepositoryUrl>
         <PublishRepositoryUrl>true</PublishRepositoryUrl>
-        <RepositoryUrl>https://github.com/SzymonHalucha/Minerals.AutoInterfaces</RepositoryUrl>
+        <RepositoryBranch>v$(Version)</RepositoryBranch>
         <RepositoryType>git</RepositoryType>
     </PropertyGroup>
 
-    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-        <Optimize>True</Optimize>
+    <PropertyGroup Condition="'$(Configuration)' == 'Release'">
+        <EnablePackageValidation>true</EnablePackageValidation>
+        <ProduceReferenceAssembly>true</ProduceReferenceAssembly>
+        <Optimize>true</Optimize>
     </PropertyGroup>
 
+    <ItemGroup Condition="'$(Configuration)' == 'Debug'">
+        <None Include="$(OutputPath)\$(AssemblyName).dll" Pack="true" PackagePath="analyzers\dotnet\cs" />
+    </ItemGroup>
+
     <ItemGroup>
-        <None Include="..\README.md" Pack="true" PackagePath="\" />
-        <None Include="..\LICENSE" Pack="true" PackagePath="\" />
+        <None Include="..\README.md" Pack="true" PackagePath="" />
+        <None Include="..\LICENSE" Pack="true" PackagePath="" />
     </ItemGroup>
 
     <ItemGroup>

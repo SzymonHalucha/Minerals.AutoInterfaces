@@ -11,7 +11,7 @@ namespace Minerals.AutoInterfaces.Tests
                 public int Property1 { get; set; }
             }
             """;
-            return TestHelpers.VerifyGenerator(source, new InterfaceGenerator(), [new GenerateAttributeGenerator()]);
+            return TestHelpers.VerifyGenerator(source, new InterfaceGenerator(), [new GenerateInterfaceAttributeGenerator()]);
         }
 
         [Fact]
@@ -26,7 +26,7 @@ namespace Minerals.AutoInterfaces.Tests
                 private int Property4 { get; set; }
                 """
             );
-            return TestHelpers.VerifyGenerator(source, new InterfaceGenerator(), [new GenerateAttributeGenerator()]);
+            return TestHelpers.VerifyGenerator(source, new InterfaceGenerator(), [new GenerateInterfaceAttributeGenerator()]);
         }
 
         [Fact]
@@ -41,7 +41,7 @@ namespace Minerals.AutoInterfaces.Tests
                 public float Property3 { get; [Obsolete] set; }
                 """
             );
-            return TestHelpers.VerifyGenerator(source, new InterfaceGenerator(), [new GenerateAttributeGenerator()]);
+            return TestHelpers.VerifyGenerator(source, new InterfaceGenerator(), [new GenerateInterfaceAttributeGenerator()]);
         }
 
         [Fact]
@@ -55,7 +55,7 @@ namespace Minerals.AutoInterfaces.Tests
                 public int Property5 { get; init; } = 5;
                 """
             );
-            return TestHelpers.VerifyGenerator(source, new InterfaceGenerator(), [new GenerateAttributeGenerator()]);
+            return TestHelpers.VerifyGenerator(source, new InterfaceGenerator(), [new GenerateInterfaceAttributeGenerator()]);
         }
 
         [Fact]
@@ -72,7 +72,7 @@ namespace Minerals.AutoInterfaces.Tests
                 public float Property6 { get; internal init; }
                 """
             );
-            return TestHelpers.VerifyGenerator(source, new InterfaceGenerator(), [new GenerateAttributeGenerator()]);
+            return TestHelpers.VerifyGenerator(source, new InterfaceGenerator(), [new GenerateInterfaceAttributeGenerator()]);
         }
 
         [Fact]
@@ -99,7 +99,7 @@ namespace Minerals.AutoInterfaces.Tests
                 private int _field;
                 """
             );
-            return TestHelpers.VerifyGenerator(source, new InterfaceGenerator(), [new GenerateAttributeGenerator()]);
+            return TestHelpers.VerifyGenerator(source, new InterfaceGenerator(), [new GenerateInterfaceAttributeGenerator()]);
         }
 
         [Fact]
@@ -114,7 +114,7 @@ namespace Minerals.AutoInterfaces.Tests
                 private int Field4;
                 """
             );
-            return TestHelpers.VerifyGenerator(source, new InterfaceGenerator(), [new GenerateAttributeGenerator()]);
+            return TestHelpers.VerifyGenerator(source, new InterfaceGenerator(), [new GenerateInterfaceAttributeGenerator()]);
         }
 
         [Fact]
@@ -127,7 +127,7 @@ namespace Minerals.AutoInterfaces.Tests
                 public event Action<int>? Event2;
                 """
             );
-            return TestHelpers.VerifyGenerator(source, new InterfaceGenerator(), [new GenerateAttributeGenerator()]);
+            return TestHelpers.VerifyGenerator(source, new InterfaceGenerator(), [new GenerateInterfaceAttributeGenerator()]);
         }
 
         [Fact]
@@ -142,7 +142,7 @@ namespace Minerals.AutoInterfaces.Tests
                 public int Method4(int arg) => arg;
                 """
             );
-            return TestHelpers.VerifyGenerator(source, new InterfaceGenerator(), [new GenerateAttributeGenerator()]);
+            return TestHelpers.VerifyGenerator(source, new InterfaceGenerator(), [new GenerateInterfaceAttributeGenerator()]);
         }
 
         [Fact]
@@ -157,7 +157,7 @@ namespace Minerals.AutoInterfaces.Tests
                 }
                 """
             );
-            return TestHelpers.VerifyGenerator(source, new InterfaceGenerator(), [new GenerateAttributeGenerator()]);
+            return TestHelpers.VerifyGenerator(source, new InterfaceGenerator(), [new GenerateInterfaceAttributeGenerator()]);
         }
 
         [Fact]
@@ -171,7 +171,7 @@ namespace Minerals.AutoInterfaces.Tests
                 [Obsolete] public void Method2(int arg) { }
                 """
             );
-            return TestHelpers.VerifyGenerator(source, new InterfaceGenerator(), [new GenerateAttributeGenerator()]);
+            return TestHelpers.VerifyGenerator(source, new InterfaceGenerator(), [new GenerateInterfaceAttributeGenerator()]);
         }
 
         [Fact]
@@ -186,7 +186,7 @@ namespace Minerals.AutoInterfaces.Tests
                 private void Method4(int arg) { }
                 """
             );
-            return TestHelpers.VerifyGenerator(source, new InterfaceGenerator(), [new GenerateAttributeGenerator()]);
+            return TestHelpers.VerifyGenerator(source, new InterfaceGenerator(), [new GenerateInterfaceAttributeGenerator()]);
         }
     }
 }

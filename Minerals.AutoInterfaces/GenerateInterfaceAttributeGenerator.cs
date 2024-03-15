@@ -1,7 +1,7 @@
 namespace Minerals.AutoInterfaces
 {
     [Generator]
-    public class GenerateAttributeGenerator : IIncrementalGenerator
+    public class GenerateInterfaceAttributeGenerator : IIncrementalGenerator
     {
         public void Initialize(IncrementalGeneratorInitializationContext context)
         {
