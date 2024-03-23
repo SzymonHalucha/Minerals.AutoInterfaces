@@ -5,6 +5,7 @@ namespace Minerals.Examples
 {
     public interface ITestClass
     {
-        void Method1();
+        event EventHandler? Event1;
+        event Action<int>? Event2;
     }
 }
