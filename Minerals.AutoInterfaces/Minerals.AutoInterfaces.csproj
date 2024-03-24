@@ -25,7 +25,7 @@
         <PackageProjectUrl>https://github.com/SzymonHalucha/Minerals.AutoInterfaces</PackageProjectUrl>
         <PackageTags>interface, interfaces, generator, generation, attribute</PackageTags>
         <PackageReadmeFile>README.md</PackageReadmeFile>
-        <PackageReleaseNotes></PackageReleaseNotes>
+        <PackageReleaseNotes>Changed code building system</PackageReleaseNotes>
         <IsPackable>true</IsPackable>
     </PropertyGroup>
 
@@ -41,10 +41,6 @@
         <ProduceReferenceAssembly>true</ProduceReferenceAssembly>
         <Optimize>true</Optimize>
     </PropertyGroup>
-
-    <ItemGroup Condition="'$(Configuration)' == 'Debug'">
-        <None Include="$(OutputPath)\$(AssemblyName).dll" Pack="true" PackagePath="analyzers\dotnet\cs" />
-    </ItemGroup>
 
     <ItemGroup>
         <None Include="..\README.md" Pack="true" PackagePath="" />
