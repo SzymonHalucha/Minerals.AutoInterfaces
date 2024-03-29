@@ -17,7 +17,7 @@ namespace Minerals.AutoInterfaces.Utils
         {
             _indentationLevel = indentationLevel;
             _indentationSize = indentationSize;
-            _builder = new(builderStartCapacity);
+            _builder = new StringBuilder(builderStartCapacity);
         }
 
         public CodeBuilder Write(string text)
@@ -49,7 +49,7 @@ namespace Minerals.AutoInterfaces.Utils
             while (moveNext)
             {
                 moveNext = enumerator.MoveNext();
-                iterator(this, current, !moveNext);
+                iterator(this, current, moveNext);
                 current = enumerator.Current;
             }
             return this;
@@ -85,37 +85,94 @@ namespace Minerals.AutoInterfaces.Utils
             return this;
         }
 
-        public CodeBuilder CloseBlock(bool newLine = false, bool appendSemicolon = false)
+        public CodeBuilder CloseBlock()
         {
             _indentationLevel--;
+            AppendLine("}");
+            return this;
+        }
+
+        public CodeBuilder CloseBlock(bool appendSemicolon)
+        {
+            _indentationLevel--;
+            AppendLine("}");
             if (appendSemicolon)
             {
-                AppendLine("};");
-            }
-            else
-            {
-                AppendLine("}");
-            }
-            if (newLine)
-            {
-                AppendLine("");
+                Append(";");
             }
             return this;
         }
 
-        public CodeBuilder WriteBlock(string text, bool newLine = false, bool appendSemicolon = false)
+        public CodeBuilder CloseAllBlocks()
+        {
+            for (int i = 0; i <= _indentationLevel; i++)
+            {
+                CloseBlock();
+            }
+            return this;
+        }
+
+        public CodeBuilder WriteBlock(string text)
         {
             OpenBlock();
             AppendLine(text);
-            CloseBlock(newLine, appendSemicolon);
+            CloseBlock();
             return this;
         }
 
-        public CodeBuilder WriteBlock(Action<CodeBuilder> writer, bool newLine = false, bool appendSemicolon = false)
+        public CodeBuilder WriteBlock(string text, bool newLine)
+        {
+            OpenBlock();
+            AppendLine(text);
+            CloseBlock();
+            if (newLine)
+            {
+                _builder.AppendLine();
+            }
+            return this;
+        }
+
+        public CodeBuilder WriteBlock(string text, bool newLine, bool appendSemicolon)
+        {
+            OpenBlock();
+            AppendLine(text);
+            CloseBlock(appendSemicolon);
+            if (newLine)
+            {
+                _builder.AppendLine();
+            }
+            return this;
+        }
+
+        public CodeBuilder WriteBlock(Action<CodeBuilder> writer)
         {
             OpenBlock();
             writer(this);
-            CloseBlock(newLine, appendSemicolon);
+            CloseBlock();
+            return this;
+        }
+
+        public CodeBuilder WriteBlock(Action<CodeBuilder> writer, bool newLine)
+        {
+            OpenBlock();
+            writer(this);
+            CloseBlock();
+            if (newLine)
+            {
+                _builder.AppendLine();
+            }
+            return this;
+        }
+
+        public CodeBuilder WriteBlock(Action<CodeBuilder> writer, bool newLine, bool appendSemicolon)
+        {
+            OpenBlock();
+            writer(this);
+            CloseBlock(appendSemicolon);
+            if (newLine)
+            {
+                _builder.AppendLine();
+            }
             return this;
         }
 
@@ -126,6 +183,17 @@ namespace Minerals.AutoInterfaces.Utils
                 return this;
             }
             return null;
+        }
+
+        public CodeBuilder NewLine()
+        {
+            _builder.AppendLine();
+            return this;
+        }
+
+        public void Clear()
+        {
+            _builder.Clear();
         }
 
         public override string ToString()
@@ -143,8 +211,9 @@ namespace Minerals.AutoInterfaces.Utils
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private void AppendLine(string text)
         {
+            _builder.AppendLine();
             AppendIndentation();
-            _builder.AppendLine(text);
+            _builder.Append(text);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]

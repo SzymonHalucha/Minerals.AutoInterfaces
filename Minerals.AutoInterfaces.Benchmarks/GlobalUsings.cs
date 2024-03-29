@@ -1,3 +1,4 @@
+global using System;
 global using Microsoft.CodeAnalysis;
 global using Microsoft.CodeAnalysis.CSharp;
 global using BenchmarkDotNet.Jobs;

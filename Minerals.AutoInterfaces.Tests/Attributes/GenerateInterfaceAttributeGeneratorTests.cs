@@ -5,7 +5,7 @@ namespace Minerals.AutoInterfaces.Tests.Attributes
     {
         public GenerateInterfaceAttributeGeneratorTests()
         {
-            VerifyExtensions.InitializeGlobalSettings();
+            VerifyExtensions.Initialize();
         }
 
         [TestMethod]

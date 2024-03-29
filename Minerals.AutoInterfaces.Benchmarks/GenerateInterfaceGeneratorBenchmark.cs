@@ -94,7 +94,7 @@
             WithGenerate = BenchmarkGenerationExtensions.CreateGeneration
             (
                 _withAttribute,
-                new InterfaceGenerator(),
+                new GenerateInterfaceGenerator(),
                 [new GenerateInterfaceAttributeGenerator()]
             );
         }

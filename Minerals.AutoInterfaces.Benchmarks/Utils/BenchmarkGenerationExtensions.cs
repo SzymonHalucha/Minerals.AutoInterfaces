@@ -9,7 +9,7 @@ namespace Minerals.AutoInterfaces.Benchmarks.Utils
 
         public static BenchmarkGeneration CreateGeneration(string source)
         {
-            return CreateGeneration(source, [], []);
+            return CreateGeneration(source, Array.Empty<IIncrementalGenerator>(), Array.Empty<IIncrementalGenerator>());
         }
 
         public static BenchmarkGeneration CreateGeneration
@@ -18,7 +18,7 @@ namespace Minerals.AutoInterfaces.Benchmarks.Utils
             IIncrementalGenerator target
         )
         {
-            return CreateGeneration(source, [target], []);
+            return CreateGeneration(source, new IIncrementalGenerator[] { target }, Array.Empty<IIncrementalGenerator>());
         }
 
         public static BenchmarkGeneration CreateGeneration
@@ -28,7 +28,7 @@ namespace Minerals.AutoInterfaces.Benchmarks.Utils
             IIncrementalGenerator[] additional
         )
         {
-            return CreateGeneration(source, [target], additional);
+            return CreateGeneration(source, new IIncrementalGenerator[] { target }, additional);
         }
 
         public static BenchmarkGeneration CreateGeneration
@@ -37,7 +37,7 @@ namespace Minerals.AutoInterfaces.Benchmarks.Utils
             IIncrementalGenerator[] targets
         )
         {
-            return CreateGeneration(source, targets, []);
+            return CreateGeneration(source, targets, Array.Empty<IIncrementalGenerator>());
         }
 
         public static BenchmarkGeneration CreateGeneration
@@ -51,8 +51,8 @@ namespace Minerals.AutoInterfaces.Benchmarks.Utils
             var compilation = CSharpCompilation.Create
             (
                 "Minerals.Benchmarks",
-                [tree],
-                [MetadataReference.CreateFromFile(tree.GetType().Assembly.Location)]
+                new SyntaxTree[] { tree },
+                new MetadataReference[] { MetadataReference.CreateFromFile(tree.GetType().Assembly.Location) }
             );
 
             CSharpGeneratorDriver.Create(additional)
@@ -63,7 +63,7 @@ namespace Minerals.AutoInterfaces.Benchmarks.Utils
                     out _
                 );
 
-            return new(CSharpGeneratorDriver.Create(targets), newCompilation);
+            return new BenchmarkGeneration(CSharpGeneratorDriver.Create(targets), newCompilation);
         }
     }
 }

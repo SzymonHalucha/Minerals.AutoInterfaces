@@ -2,27 +2,46 @@ namespace Minerals.AutoInterfaces.Tests.Utils
 {
     public static class VerifyExtensions
     {
-        public static bool ScrubSingleLineComments { get; set; } = true;
-        public static bool RemoveEmptyLines { get; set; } = false;
-
+        private static bool _scrubCommentLines = true;
+        private static bool _scrubEmptyLines = true;
         private static bool _isInitialized = false;
 
-        public static void InitializeGlobalSettings()
+        public static void Initialize(bool removeCommentLines = true, bool removeEmptyLines = true)
         {
-            if (_isInitialized)
+            var order = new DiffTool[]
             {
-                return;
-            }
-            DiffTools.UseOrder(DiffTool.VisualStudioCode, DiffTool.VisualStudio, DiffTool.Rider);
-            VerifyBase.UseProjectRelativeDirectory("Snapshots");
-            VerifierSettings.UseEncoding(Encoding.UTF8);
-            VerifySourceGenerators.Initialize();
-            _isInitialized = true;
+            DiffTool.VisualStudioCode,
+            DiffTool.VisualStudio,
+            DiffTool.Rider,
+            DiffTool.Neovim,
+            DiffTool.Vim
+            };
+            Initialize(removeCommentLines, removeEmptyLines, order);
         }
 
-        public static Task VerifyIncrementalGenerators(this VerifyBase instance, IIncrementalGenerator target)
+        public static void Initialize(bool removeCommentLines, bool removeEmptyLines, DiffTool[] order)
         {
-            return VerifyIncrementalGenerators(instance, [target], []);
+            if (!_isInitialized)
+            {
+                DiffTools.UseOrder(order);
+                VerifyBase.UseProjectRelativeDirectory("Snapshots");
+                VerifierSettings.UseEncoding(Encoding.UTF8);
+                VerifySourceGenerators.Initialize();
+                _scrubCommentLines = removeCommentLines;
+                _scrubEmptyLines = removeCommentLines;
+                _isInitialized = true;
+            }
+        }
+
+        public static Task VerifyIncrementalGenerators
+        (
+            this VerifyBase instance,
+            IIncrementalGenerator target
+        )
+        {
+            var targets = new IIncrementalGenerator[] { target };
+            var additional = Array.Empty<IIncrementalGenerator>();
+            return VerifyIncrementalGenerators(instance, targets, additional);
         }
 
         public static Task VerifyIncrementalGenerators
@@ -32,7 +51,8 @@ namespace Minerals.AutoInterfaces.Tests.Utils
             IIncrementalGenerator[] additional
         )
         {
-            return VerifyIncrementalGenerators(instance, [target], additional);
+            var targets = new IIncrementalGenerator[] { target };
+            return VerifyIncrementalGenerators(instance, targets, additional);
         }
 
         public static Task VerifyIncrementalGenerators
@@ -42,7 +62,7 @@ namespace Minerals.AutoInterfaces.Tests.Utils
             IIncrementalGenerator[] additional
         )
         {
-            var compilation = CSharpCompilation.Create("Minerals.Tests");
+            var compilation = CSharpCompilation.Create("Tests");
             CSharpGeneratorDriver.Create(additional)
                 .RunGeneratorsAndUpdateCompilation
                 (
@@ -57,9 +77,16 @@ namespace Minerals.AutoInterfaces.Tests.Utils
             return ApplyDynamicSettings(instance.Verify(driver.GetRunResult()));
         }
 
-        public static Task VerifyIncrementalGenerators(this VerifyBase instance, string source, IIncrementalGenerator target)
+        public static Task VerifyIncrementalGenerators
+        (
+            this VerifyBase instance,
+            string source,
+            IIncrementalGenerator target
+        )
         {
-            return VerifyIncrementalGenerators(instance, source, [target], []);
+            var targets = new IIncrementalGenerator[] { target };
+            var additional = Array.Empty<IIncrementalGenerator>();
+            return VerifyIncrementalGenerators(instance, source, targets, additional);
         }
 
         public static Task VerifyIncrementalGenerators
@@ -70,7 +97,8 @@ namespace Minerals.AutoInterfaces.Tests.Utils
             IIncrementalGenerator[] additional
         )
         {
-            return VerifyIncrementalGenerators(instance, source, [target], additional);
+            var targets = new IIncrementalGenerator[] { target };
+            return VerifyIncrementalGenerators(instance, source, targets, additional);
         }
 
         public static Task VerifyIncrementalGenerators
@@ -84,9 +112,9 @@ namespace Minerals.AutoInterfaces.Tests.Utils
             var tree = CSharpSyntaxTree.ParseText(source);
             var compilation = CSharpCompilation.Create
             (
-                "Minerals.Tests",
-                [tree],
-                [MetadataReference.CreateFromFile(tree.GetType().Assembly.Location)]
+                "Tests",
+                new SyntaxTree[] { tree },
+                new MetadataReference[] { MetadataReference.CreateFromFile(tree.GetType().Assembly.Location) }
             );
 
             CSharpGeneratorDriver.Create(additional)
@@ -105,14 +133,14 @@ namespace Minerals.AutoInterfaces.Tests.Utils
 
         private static SettingsTask ApplyDynamicSettings(SettingsTask task)
         {
-            if (ScrubSingleLineComments)
+            if (_scrubCommentLines)
             {
                 task.ScrubLines("cs", x =>
                 {
                     return x.StartsWith("//");
                 });
             }
-            if (RemoveEmptyLines)
+            if (_scrubEmptyLines)
             {
                 task.ScrubEmptyLines();
             }

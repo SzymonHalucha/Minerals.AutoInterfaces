@@ -1,11 +1,11 @@
 namespace Minerals.AutoInterfaces.Tests
 {
     [TestClass]
-    public class InterfaceGeneratorTests : VerifyBase
+    public class GenerateInterfaceGeneratorTests : VerifyBase
     {
-        public InterfaceGeneratorTests()
+        public GenerateInterfaceGeneratorTests()
         {
-            VerifyExtensions.InitializeGlobalSettings();
+            VerifyExtensions.Initialize();
         }
 
         [TestMethod]
@@ -25,7 +25,7 @@ namespace Minerals.AutoInterfaces.Tests
             [
                 new GenerateInterfaceAttributeGenerator()
             ];
-            return this.VerifyIncrementalGenerators(source, new InterfaceGenerator(), additional);
+            return this.VerifyIncrementalGenerators(source, new GenerateInterfaceGenerator(), additional);
         }
 
         [TestMethod]
@@ -51,7 +51,7 @@ namespace Minerals.AutoInterfaces.Tests
             [
                 new GenerateInterfaceAttributeGenerator()
             ];
-            return this.VerifyIncrementalGenerators(source, new InterfaceGenerator(), additional);
+            return this.VerifyIncrementalGenerators(source, new GenerateInterfaceGenerator(), additional);
         }
 
         [TestMethod]
@@ -77,7 +77,7 @@ namespace Minerals.AutoInterfaces.Tests
             [
                 new GenerateInterfaceAttributeGenerator()
             ];
-            return this.VerifyIncrementalGenerators(source, new InterfaceGenerator(), additional);
+            return this.VerifyIncrementalGenerators(source, new GenerateInterfaceGenerator(), additional);
         }
 
         [TestMethod]
@@ -102,7 +102,7 @@ namespace Minerals.AutoInterfaces.Tests
             [
                 new GenerateInterfaceAttributeGenerator()
             ];
-            return this.VerifyIncrementalGenerators(source, new InterfaceGenerator(), additional);
+            return this.VerifyIncrementalGenerators(source, new GenerateInterfaceGenerator(), additional);
         }
 
         [TestMethod]
@@ -130,7 +130,7 @@ namespace Minerals.AutoInterfaces.Tests
             [
                 new GenerateInterfaceAttributeGenerator()
             ];
-            return this.VerifyIncrementalGenerators(source, new InterfaceGenerator(), additional);
+            return this.VerifyIncrementalGenerators(source, new GenerateInterfaceGenerator(), additional);
         }
 
         [TestMethod]
@@ -168,7 +168,7 @@ namespace Minerals.AutoInterfaces.Tests
             [
                 new GenerateInterfaceAttributeGenerator()
             ];
-            return this.VerifyIncrementalGenerators(source, new InterfaceGenerator(), additional);
+            return this.VerifyIncrementalGenerators(source, new GenerateInterfaceGenerator(), additional);
         }
 
         [TestMethod]
@@ -194,7 +194,7 @@ namespace Minerals.AutoInterfaces.Tests
             [
                 new GenerateInterfaceAttributeGenerator()
             ];
-            return this.VerifyIncrementalGenerators(source, new InterfaceGenerator(), additional);
+            return this.VerifyIncrementalGenerators(source, new GenerateInterfaceGenerator(), additional);
         }
 
         [TestMethod]
@@ -218,7 +218,7 @@ namespace Minerals.AutoInterfaces.Tests
             [
                 new GenerateInterfaceAttributeGenerator()
             ];
-            return this.VerifyIncrementalGenerators(source, new InterfaceGenerator(), additional);
+            return this.VerifyIncrementalGenerators(source, new GenerateInterfaceGenerator(), additional);
         }
 
         [TestMethod]
@@ -242,7 +242,7 @@ namespace Minerals.AutoInterfaces.Tests
             [
                 new GenerateInterfaceAttributeGenerator()
             ];
-            return this.VerifyIncrementalGenerators(source, new InterfaceGenerator(), additional);
+            return this.VerifyIncrementalGenerators(source, new GenerateInterfaceGenerator(), additional);
         }
 
         [TestMethod]
@@ -268,7 +268,7 @@ namespace Minerals.AutoInterfaces.Tests
             [
                 new GenerateInterfaceAttributeGenerator()
             ];
-            return this.VerifyIncrementalGenerators(source, new InterfaceGenerator(), additional);
+            return this.VerifyIncrementalGenerators(source, new GenerateInterfaceGenerator(), additional);
         }
 
         [TestMethod]
@@ -294,7 +294,7 @@ namespace Minerals.AutoInterfaces.Tests
             [
                 new GenerateInterfaceAttributeGenerator()
             ];
-            return this.VerifyIncrementalGenerators(source, new InterfaceGenerator(), additional);
+            return this.VerifyIncrementalGenerators(source, new GenerateInterfaceGenerator(), additional);
         }
 
         [TestMethod]
@@ -319,7 +319,7 @@ namespace Minerals.AutoInterfaces.Tests
             [
                 new GenerateInterfaceAttributeGenerator()
             ];
-            return this.VerifyIncrementalGenerators(source, new InterfaceGenerator(), additional);
+            return this.VerifyIncrementalGenerators(source, new GenerateInterfaceGenerator(), additional);
         }
 
         [TestMethod]
@@ -345,7 +345,7 @@ namespace Minerals.AutoInterfaces.Tests
             [
                 new GenerateInterfaceAttributeGenerator()
             ];
-            return this.VerifyIncrementalGenerators(source, new InterfaceGenerator(), additional);
+            return this.VerifyIncrementalGenerators(source, new GenerateInterfaceGenerator(), additional);
         }
     }
 }

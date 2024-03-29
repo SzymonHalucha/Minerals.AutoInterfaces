@@ -11,7 +11,7 @@
     </PropertyGroup>
 
     <PropertyGroup>
-        <Version>0.1.2</Version>
+        <Version>0.1.3</Version>
         <Title>AutoInterfaces</Title>
         <Authors>Szymon Hałucha</Authors>
         <Product>AutoInterfaces</Product>
@@ -23,9 +23,9 @@
         <PackageId>Minerals.AutoInterfaces</PackageId>
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
         <PackageProjectUrl>https://github.com/SzymonHalucha/Minerals.AutoInterfaces</PackageProjectUrl>
-        <PackageTags>interface, interfaces, generator, generation, attribute</PackageTags>
+        <PackageTags>interface, interfaces, generator, source, code, generation, attribute</PackageTags>
         <PackageReadmeFile>README.md</PackageReadmeFile>
-        <PackageReleaseNotes>Fixed attribute code builder</PackageReleaseNotes>
+        <PackageReleaseNotes></PackageReleaseNotes>
         <IsPackable>true</IsPackable>
     </PropertyGroup>
 
