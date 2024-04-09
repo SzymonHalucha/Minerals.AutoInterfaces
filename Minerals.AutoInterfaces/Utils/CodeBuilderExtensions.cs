@@ -55,7 +55,7 @@ namespace Minerals.AutoInterfaces.Utils
                 {
                     foreach (var item in list)
                     {
-                        usings.Add(item.ToString());
+                        usings.Add(item.Name!.ToString());
                     }
                 }
             }
@@ -63,7 +63,7 @@ namespace Minerals.AutoInterfaces.Utils
             {
                 foreach (var item in usings)
                 {
-                    builder.WriteLine(item);
+                    builder.WriteLine("using ").Write(item).Write(";");
                 }
                 builder.NewLine();
             }
@@ -82,9 +82,16 @@ namespace Minerals.AutoInterfaces.Utils
 
         public static CodeBuilder AddTypeDeclarationHeader(this CodeBuilder builder, SyntaxNode node)
         {
+            return builder.AddTypeDeclarationHeader(node, Array.Empty<string>());
+        }
+
+        public static CodeBuilder AddTypeDeclarationHeader(this CodeBuilder builder, SyntaxNode node, string[] interfaces)
+        {
             var typeSyntax = (TypeDeclarationSyntax)node;
             builder.WriteLine(typeSyntax.Modifiers.ToString())
-                .Write(" ").Write(typeSyntax.Keyword.ToString()).Write(" ")
+                .Write(" ")
+                .Write(typeSyntax.Keyword.ToString())
+                .Write(" ")
                 .Write(typeSyntax.Identifier.ValueText);
 
             if (typeSyntax.TypeParameterList != null)
@@ -98,6 +105,25 @@ namespace Minerals.AutoInterfaces.Utils
             if (typeSyntax.BaseList != null)
             {
                 builder.Write(typeSyntax.BaseList.ToString());
+            }
+            if (interfaces.Length > 0)
+            {
+                if (typeSyntax.BaseList == null)
+                {
+                    builder.Write(" : ");
+                }
+                else
+                {
+                    builder.Write(", ");
+                }
+                for (int i = 0; i < interfaces.Length; i++)
+                {
+                    builder.Write(interfaces[i]);
+                    if (i < interfaces.Length - 1)
+                    {
+                        builder.Write(", ");
+                    }
+                }
             }
             if (typeSyntax.ConstraintClauses.Count > 0)
             {

@@ -2,9 +2,9 @@
 {
     public class GenerateInterfaceGeneratorBenchmark
     {
-        public BenchmarkGeneration Baseline { get; set; }
-        public BenchmarkGeneration WithAttribute { get; set; }
-        public BenchmarkGeneration WithGenerate { get; set; }
+        public BenchmarkGeneration? Baseline { get; set; }
+        public BenchmarkGeneration? WithAttribute { get; set; }
+        public BenchmarkGeneration? WithGenerate { get; set; }
 
         private const string _withoutAttribute = """
         using System;
@@ -85,36 +85,43 @@
         [GlobalSetup]
         public void Initialize()
         {
-            Baseline = BenchmarkGenerationExtensions.CreateGeneration(_withoutAttribute);
+            var references = BenchmarkGenerationExtensions.GetAppReferences
+            (
+                typeof(object),
+                typeof(GenerateInterfaceAttributeGenerator)
+            );
+            Baseline = BenchmarkGenerationExtensions.CreateGeneration(_withoutAttribute, references);
             WithAttribute = BenchmarkGenerationExtensions.CreateGeneration
             (
                 _withoutAttribute,
-                new GenerateInterfaceAttributeGenerator()
+                new GenerateInterfaceAttributeGenerator(),
+                references
             );
             WithGenerate = BenchmarkGenerationExtensions.CreateGeneration
             (
                 _withAttribute,
                 new GenerateInterfaceGenerator(),
-                [new GenerateInterfaceAttributeGenerator()]
+                [new GenerateInterfaceAttributeGenerator()],
+                references
             );
         }
 
         [Benchmark(Baseline = true)]
         public void Generation_Baseline()
         {
-            Baseline.RunGeneration();
+            Baseline!.RunGeneration();
         }
 
         [Benchmark]
         public void Generation_Attribute()
         {
-            WithAttribute.RunGeneration();
+            WithAttribute!.RunGeneration();
         }
 
         [Benchmark]
         public void Generation_InterfaceGenerator()
         {
-            WithGenerate.RunGeneration();
+            WithGenerate!.RunGeneration();
         }
     }
 }

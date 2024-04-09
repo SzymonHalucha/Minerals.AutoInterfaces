@@ -5,7 +5,12 @@ namespace Minerals.AutoInterfaces.Tests.Attributes
     {
         public GenerateInterfaceAttributeGeneratorTests()
         {
-            VerifyExtensions.Initialize();
+            var references = VerifyExtensions.GetAppReferences
+            (
+                typeof(object),
+                typeof(GenerateInterfaceAttributeGenerator)
+            );
+            VerifyExtensions.Initialize(references);
         }
 
         [TestMethod]

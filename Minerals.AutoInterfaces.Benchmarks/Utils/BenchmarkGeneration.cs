@@ -1,9 +1,9 @@
 namespace Minerals.AutoInterfaces.Benchmarks.Utils
 {
-    public readonly struct BenchmarkGeneration
+    public class BenchmarkGeneration
     {
-        public readonly GeneratorDriver Driver { get; }
-        public readonly Compilation Compilation { get; }
+        public GeneratorDriver Driver { get; set; }
+        public Compilation Compilation { get; set; }
 
         public BenchmarkGeneration(GeneratorDriver driver, Compilation compilation)
         {

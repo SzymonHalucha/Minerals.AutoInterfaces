@@ -1,3 +1,4 @@
+
 namespace Minerals.AutoInterfaces.Tests
 {
     [TestClass]
@@ -5,7 +6,12 @@ namespace Minerals.AutoInterfaces.Tests
     {
         public GenerateInterfaceGeneratorTests()
         {
-            VerifyExtensions.Initialize();
+            var references = VerifyExtensions.GetAppReferences
+            (
+                typeof(object),
+                typeof(GenerateInterfaceAttributeGenerator)
+            );
+            VerifyExtensions.Initialize(references);
         }
 
         [TestMethod]

@@ -25,7 +25,7 @@
         <PackageProjectUrl>https://github.com/SzymonHalucha/Minerals.AutoInterfaces</PackageProjectUrl>
         <PackageTags>interface, interfaces, generator, source, code, generation, attribute</PackageTags>
         <PackageReadmeFile>README.md</PackageReadmeFile>
-        <PackageReleaseNotes></PackageReleaseNotes>
+        <PackageReleaseNotes>Optimization</PackageReleaseNotes>
         <IsPackable>true</IsPackable>
     </PropertyGroup>
 
@@ -37,6 +37,7 @@
     </PropertyGroup>
 
     <PropertyGroup Condition="'$(Configuration)' == 'Release'">
+        <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
         <EnablePackageValidation>true</EnablePackageValidation>
         <ProduceReferenceAssembly>true</ProduceReferenceAssembly>
         <IncludeBuildOutput>false</IncludeBuildOutput>
@@ -46,7 +47,7 @@
     <ItemGroup>
         <None Include="README.md" Pack="true" PackagePath="" />
         <None Include="..\LICENSE" Pack="true" PackagePath="" />
-        <None Include="$(OutputPath)\$(AssemblyName).dll" Pack="true" PackagePath="analyzers/dotnet/cs" />
+        <None Include="$(OutputPath)\$(AssemblyName).dll" Pack="true" PackagePath="analyzers\dotnet\cs" />
     </ItemGroup>
 
     <ItemGroup>
