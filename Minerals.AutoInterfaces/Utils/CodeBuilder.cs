@@ -50,7 +50,10 @@ namespace Minerals.AutoInterfaces.Utils
             {
                 moveNext = enumerator.MoveNext();
                 iterator(this, current, moveNext);
-                current = enumerator.Current;
+                if (moveNext)
+                {
+                    current = enumerator.Current;
+                }
             }
             return this;
         }
@@ -73,7 +76,10 @@ namespace Minerals.AutoInterfaces.Utils
             {
                 moveNext = enumerator.MoveNext();
                 iterator(this, current, moveNext);
-                current = enumerator.Current;
+                if (moveNext)
+                {
+                    current = enumerator.Current;
+                }
             }
             return this;
         }

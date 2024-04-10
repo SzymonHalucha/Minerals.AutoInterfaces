@@ -9,7 +9,8 @@ namespace Minerals.AutoInterfaces.Tests
             var references = VerifyExtensions.GetAppReferences
             (
                 typeof(object),
-                typeof(GenerateInterfaceAttributeGenerator)
+                typeof(GenerateInterfaceAttributeGenerator),
+                typeof(Assembly)
             );
             VerifyExtensions.Initialize(references);
         }

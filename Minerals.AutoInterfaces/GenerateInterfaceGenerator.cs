@@ -52,11 +52,11 @@ namespace Minerals.AutoInterfaces
                 {
                     GenerateMethodHeader(builder, method);
                 }
-                if (member is EventFieldDeclarationSyntax evt)
+                else if (member is EventFieldDeclarationSyntax evt)
                 {
                     GenerateEventFieldHeader(builder, evt);
                 }
-                if (member is PropertyDeclarationSyntax property)
+                else if (member is PropertyDeclarationSyntax property)
                 {
                     GeneratePropertyHeader(builder, property);
                 }
