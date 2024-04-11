@@ -354,5 +354,62 @@ namespace Minerals.AutoInterfaces.Tests
             ];
             return this.VerifyIncrementalGenerators(source, new GenerateInterfaceGenerator(), additional);
         }
+
+        [TestMethod]
+        public Task Members_ShouldGenerateWithoutStatic()
+        {
+            const string source = """
+            using System;
+            using Minerals.AutoInterfaces;
+
+            namespace Minerals.Examples
+            {
+                [GenerateInterface]
+                public class TestClass
+                {
+                    public static int Property1 { get; set; } = 1;
+                    public int Property2 { get; set; } = 2;
+                    
+                    public static event Action<int>? Event1;
+                    public static int Field1 = 1;
+
+                    public static void Method1() { }
+                    public void Method2() { }
+                }
+            }
+            """;
+            IIncrementalGenerator[] additional =
+            [
+                new GenerateInterfaceAttributeGenerator()
+            ];
+            return this.VerifyIncrementalGenerators(source, new GenerateInterfaceGenerator(), additional);
+        }
+
+        [TestMethod]
+        public Task Usings_ShouldGenerateWithoutGlobal()
+        {
+            const string source = """
+            using System;
+            global using System.Linq;
+            using Minerals.AutoInterfaces;
+
+            namespace Minerals.Examples
+            {
+                [GenerateInterface]
+                public class TestClass
+                {
+                    public void Method1() { }
+                    protected void Method2(int arg) { }
+                    internal void Method3() { }
+                    private void Method4(int arg) { }
+                }
+            }
+            """;
+            IIncrementalGenerator[] additional =
+            [
+                new GenerateInterfaceAttributeGenerator()
+            ];
+            return this.VerifyIncrementalGenerators(source, new GenerateInterfaceGenerator(), additional);
+        }
     }
 }

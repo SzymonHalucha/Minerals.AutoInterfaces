@@ -55,7 +55,7 @@ namespace Minerals.AutoInterfaces
 
         private static string[][] GetPublicMembersFrom(SyntaxNode from)
         {
-            var syntaxes = ((TypeDeclarationSyntax)from).Members.Where(x => IsPublic(x));
+            var syntaxes = ((TypeDeclarationSyntax)from).Members.Where(x => IsValid(x));
             var members = new List<string[]>();
             foreach (var syntax in syntaxes)
             {
@@ -75,9 +75,10 @@ namespace Minerals.AutoInterfaces
             return members.ToArray();
         }
 
-        private static bool IsPublic(MemberDeclarationSyntax node)
+        private static bool IsValid(MemberDeclarationSyntax node)
         {
-            return node.Modifiers.Any(x => x.IsKind(SyntaxKind.PublicKeyword)) == true;
+            return node.Modifiers.Any(x => x.IsKind(SyntaxKind.PublicKeyword))
+                && !node.Modifiers.Any(x => x.IsKind(SyntaxKind.StaticKeyword));
         }
 
         private static string[] GetMethodHeader(MethodDeclarationSyntax method)
@@ -129,7 +130,9 @@ namespace Minerals.AutoInterfaces
 
         private static string[] GetUsingsFrom(SyntaxNode from)
         {
-            var usings = from.FirstAncestorOrSelf<CompilationUnitSyntax>()?.Usings.Select(x => x.Name!.ToString());
+            var usings = from.FirstAncestorOrSelf<CompilationUnitSyntax>()?.Usings
+                .Where(x => x.GlobalKeyword.IsKind(SyntaxKind.None))
+                .Select(x => x.Name!.ToString());
             return usings != null ? usings.ToArray() : [];
         }
     }
