@@ -25,7 +25,7 @@
         <PackageProjectUrl>https://github.com/SzymonHalucha/Minerals.AutoInterfaces</PackageProjectUrl>
         <PackageTags>interface, interfaces, generator, source, code, generation, attribute</PackageTags>
         <PackageReadmeFile>README.md</PackageReadmeFile>
-        <PackageReleaseNotes>Optimization</PackageReleaseNotes>
+        <PackageReleaseNotes>Generator optimization</PackageReleaseNotes>
         <IsPackable>true</IsPackable>
     </PropertyGroup>
 
