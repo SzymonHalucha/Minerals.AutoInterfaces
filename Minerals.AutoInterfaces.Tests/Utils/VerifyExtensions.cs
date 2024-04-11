@@ -114,7 +114,7 @@ namespace Minerals.AutoInterfaces.Tests.Utils
                 .RunGeneratorsAndUpdateCompilation(cSharpCmp, out var cmp, out _);
 
             var driver = CSharpGeneratorDriver.Create(targets.ToArray())
-                .RunGeneratorsAndUpdateCompilation(cmp, out cmp, out _);
+                .RunGenerators(cmp);
 
             foreach (var diag in cmp.GetDiagnostics())
             {
@@ -151,7 +151,7 @@ namespace Minerals.AutoInterfaces.Tests.Utils
                 .RunGeneratorsAndUpdateCompilation(cSharpCmp, out var cmp, out _);
 
             var driver = CSharpGeneratorDriver.Create(targets.ToArray())
-                .RunGeneratorsAndUpdateCompilation(cmp, out cmp, out _);
+                .RunGenerators(cmp);
 
             foreach (var diag in cmp.GetDiagnostics())
             {

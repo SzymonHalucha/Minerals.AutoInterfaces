@@ -1,0 +1,136 @@
+namespace Minerals.AutoInterfaces
+{
+    public readonly struct AttributeObject
+    {
+        public string AccessModifier { get; }
+        public string Name { get; }
+        public string Namespace { get; }
+        public string[][] PublicMembers { get; }
+        public string[] Usings { get; }
+
+        public AttributeObject(GeneratorAttributeSyntaxContext context)
+        {
+            AccessModifier = GetAccessModifierOf(context.TargetNode);
+            Name = GetNameOf(context.TargetNode);
+            Namespace = GetNamespaceFrom(context.TargetNode);
+            PublicMembers = GetPublicMembersFrom(context.TargetNode);
+            Usings = GetUsingsFrom(context.TargetNode);
+        }
+
+        public override bool Equals(object obj)
+        {
+            return obj is AttributeObject attrObj
+            && attrObj.AccessModifier.Equals(AccessModifier)
+            && attrObj.Name.Equals(Name)
+            && attrObj.Namespace.Equals(Namespace)
+            && attrObj.PublicMembers.SequenceEqual(PublicMembers)
+            && attrObj.Usings.SequenceEqual(Usings);
+        }
+
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(AccessModifier, Name, Namespace, PublicMembers, Usings);
+        }
+
+        private static string GetAccessModifierOf(SyntaxNode node)
+        {
+            return (node as MemberDeclarationSyntax)?.Modifiers.Where(x =>
+            {
+                return x.IsKind(SyntaxKind.PrivateKeyword)
+                    || x.IsKind(SyntaxKind.ProtectedKeyword)
+                    || x.IsKind(SyntaxKind.InternalKeyword)
+                    || x.IsKind(SyntaxKind.PublicKeyword);
+            }).Select(x => x.ValueText).Aggregate((x, y) => $"{x} {y}") ?? string.Empty;
+        }
+
+        private static string GetNameOf(SyntaxNode node)
+        {
+            return ((BaseTypeDeclarationSyntax)node).Identifier.ValueText;
+        }
+
+        private static string GetNamespaceFrom(SyntaxNode from)
+        {
+            return from.FirstAncestorOrSelf<NamespaceDeclarationSyntax>()?.Name.ToString() ?? string.Empty;
+        }
+
+        private static string[][] GetPublicMembersFrom(SyntaxNode from)
+        {
+            var syntaxes = ((TypeDeclarationSyntax)from).Members.Where(x => IsPublic(x));
+            var members = new List<string[]>();
+            foreach (var syntax in syntaxes)
+            {
+                if (syntax is MethodDeclarationSyntax method)
+                {
+                    members.Add(GetMethodHeader(method));
+                }
+                else if (syntax is EventFieldDeclarationSyntax evt)
+                {
+                    members.Add(GetEventFieldHeader(evt));
+                }
+                else if (syntax is PropertyDeclarationSyntax property)
+                {
+                    members.Add(GetPropertyHeader(property));
+                }
+            }
+            return members.ToArray();
+        }
+
+        private static bool IsPublic(MemberDeclarationSyntax node)
+        {
+            return node.Modifiers.Any(x => x.IsKind(SyntaxKind.PublicKeyword)) == true;
+        }
+
+        private static string[] GetMethodHeader(MethodDeclarationSyntax method)
+        {
+            var returnType = method.ReturnType.ToString();
+            var name = method.Identifier.ToString();
+            var typeParameters = method.TypeParameterList?.ToString();
+            var parameters = method.ParameterList?.ToString();
+            var clauses = method.ConstraintClauses.ToString();
+            return [returnType, " ", name, typeParameters ?? string.Empty, parameters ?? "()", clauses.Length > 0 ? " " : "", clauses, ";"];
+        }
+
+        private static string[] GetEventFieldHeader(EventFieldDeclarationSyntax evt)
+        {
+            var type = evt.Declaration.Type.ToString();
+            var variables = evt.Declaration.Variables.ToString();
+            return ["event ", type, " ", variables, ";"];
+        }
+
+        private static string[] GetPropertyHeader(PropertyDeclarationSyntax property)
+        {
+            var type = property.Type.ToString();
+            var name = property.Identifier.ValueText;
+            var get = HasPublicAccessor(property, SyntaxKind.GetAccessorDeclaration) ? "get; " : string.Empty;
+            var set = HasPublicAccessor(property, SyntaxKind.SetAccessorDeclaration) ? "set; " : string.Empty;
+            var init = HasPublicAccessor(property, SyntaxKind.InitAccessorDeclaration) ? "init; " : string.Empty;
+            return [type, " ", name, " { ", get, set, init, "}"];
+        }
+
+        private static bool HasPublicAccessor(PropertyDeclarationSyntax property, SyntaxKind kind)
+        {
+            if (property.ExpressionBody != null)
+            {
+                if (kind.Equals(SyntaxKind.GetAccessorDeclaration))
+                {
+                    return true;
+                }
+                return false;
+            }
+            if (property.AccessorList == null)
+            {
+                return false;
+            }
+            return property.AccessorList.Accessors.Any(x =>
+            {
+                return x.IsKind(kind) && (x.Modifiers.Count <= 0 || x.Modifiers.Any(y => y.IsKind(SyntaxKind.PublicKeyword)));
+            });
+        }
+
+        private static string[] GetUsingsFrom(SyntaxNode from)
+        {
+            var usings = from.FirstAncestorOrSelf<CompilationUnitSyntax>()?.Usings.Select(x => x.Name!.ToString());
+            return usings != null ? usings.ToArray() : [];
+        }
+    }
+}
