@@ -34,13 +34,13 @@ namespace Minerals.AutoInterfaces
 
         private static string GetAccessModifierOf(SyntaxNode node)
         {
-            return (node as MemberDeclarationSyntax)?.Modifiers.Where(x =>
+            return ((MemberDeclarationSyntax)node).Modifiers.Where(x =>
             {
                 return x.IsKind(SyntaxKind.PrivateKeyword)
                     || x.IsKind(SyntaxKind.ProtectedKeyword)
                     || x.IsKind(SyntaxKind.InternalKeyword)
                     || x.IsKind(SyntaxKind.PublicKeyword);
-            }).Select(x => x.ValueText).Aggregate((x, y) => $"{x} {y}") ?? string.Empty;
+            }).Select(x => x.ValueText).Aggregate((x, y) => $"{x} {y}");
         }
 
         private static string GetNameOf(SyntaxNode node)

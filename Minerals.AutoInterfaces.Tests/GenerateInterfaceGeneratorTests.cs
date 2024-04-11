@@ -389,8 +389,8 @@ namespace Minerals.AutoInterfaces.Tests
         public Task Usings_ShouldGenerateWithoutGlobal()
         {
             const string source = """
-            using System;
             global using System.Linq;
+            using System;
             using Minerals.AutoInterfaces;
 
             namespace Minerals.Examples
