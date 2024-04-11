@@ -1,10 +1,12 @@
 ﻿namespace Minerals.AutoInterfaces.Benchmarks
 {
-    public class GenerateInterfaceGeneratorBenchmark
+    public class GenerateInterfaceGeneratorBenchmarks
     {
-        public BenchmarkGeneration? Baseline { get; set; }
-        public BenchmarkGeneration? WithAttribute { get; set; }
-        public BenchmarkGeneration? WithGenerate { get; set; }
+        public BenchmarkGeneration Baseline { get; set; } = default!;
+        public BenchmarkGeneration AttributeGeneration { get; set; } = default!;
+        public BenchmarkGeneration InterfaceGeneration { get; set; } = default!;
+        public BenchmarkGeneration BaselineDouble { get; set; } = default!;
+        public BenchmarkGeneration InterfaceGenerationDouble { get; set; } = default!;
 
         private const string _withoutAttribute = """
         using System;
@@ -90,38 +92,70 @@
                 typeof(object),
                 typeof(GenerateInterfaceAttributeGenerator)
             );
-            Baseline = BenchmarkGenerationExtensions.CreateGeneration(_withoutAttribute, references);
-            WithAttribute = BenchmarkGenerationExtensions.CreateGeneration
+            Baseline = BenchmarkGenerationExtensions.CreateGeneration
+            (
+                _withoutAttribute,
+                references
+            );
+            AttributeGeneration = BenchmarkGenerationExtensions.CreateGeneration
             (
                 _withoutAttribute,
                 new GenerateInterfaceAttributeGenerator(),
                 references
             );
-            WithGenerate = BenchmarkGenerationExtensions.CreateGeneration
+            InterfaceGeneration = BenchmarkGenerationExtensions.CreateGeneration
             (
                 _withAttribute,
                 new GenerateInterfaceGenerator(),
                 [new GenerateInterfaceAttributeGenerator()],
                 references
             );
+            BaselineDouble = BenchmarkGenerationExtensions.CreateGeneration
+            (
+                _withoutAttribute,
+                references
+            );
+            InterfaceGenerationDouble = BenchmarkGenerationExtensions.CreateGeneration
+            (
+                _withAttribute,
+                new GenerateInterfaceGenerator(),
+                [new GenerateInterfaceAttributeGenerator()],
+                references
+            );
+            BaselineDouble.RunAndSaveGeneration();
+            BaselineDouble.AddSourceCode("// Test Comment");
+            InterfaceGenerationDouble.RunAndSaveGeneration();
+            InterfaceGenerationDouble.AddSourceCode("// Test Comment");
         }
 
         [Benchmark(Baseline = true)]
-        public void Generation_Baseline()
+        public void SingleGeneration_Baseline()
         {
-            Baseline!.RunGeneration();
+            Baseline.RunGeneration();
         }
 
         [Benchmark]
-        public void Generation_Attribute()
+        public void SingleGeneration_OnlyAttribute()
         {
-            WithAttribute!.RunGeneration();
+            AttributeGeneration.RunGeneration();
         }
 
         [Benchmark]
-        public void Generation_InterfaceGenerator()
+        public void SingleGeneration_FullInterface()
         {
-            WithGenerate!.RunGeneration();
+            InterfaceGeneration.RunGeneration();
+        }
+
+        [Benchmark]
+        public void DoubleGeneration_Baseline()
+        {
+            BaselineDouble.RunGeneration();
+        }
+
+        [Benchmark]
+        public void DoubleGeneration_FullInterface()
+        {
+            InterfaceGenerationDouble.RunGeneration();
         }
     }
 }

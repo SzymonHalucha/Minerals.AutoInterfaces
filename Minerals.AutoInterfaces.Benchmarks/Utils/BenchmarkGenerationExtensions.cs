@@ -9,20 +9,30 @@ namespace Minerals.AutoInterfaces.Benchmarks.Utils
             return assemblies.Select(x => MetadataReference.CreateFromFile(Assembly.Load(x).Location));
         }
 
-        public static void RunAndUpdateGeneration(this BenchmarkGeneration instance)
+        public static void SetSourceCode(this BenchmarkGeneration instance, string code)
         {
-            instance.Driver.RunGeneratorsAndUpdateCompilation
-            (
-                instance.Compilation,
-                out var cmp,
-                out _
-            );
-            instance.Compilation = cmp;
+            instance.CurrentCompilation = instance.CurrentCompilation.RemoveAllSyntaxTrees().AddSyntaxTrees(CSharpSyntaxTree.ParseText(code));
+        }
+
+        public static void AddSourceCode(this BenchmarkGeneration instance, string code)
+        {
+            instance.CurrentCompilation = instance.CurrentCompilation.AddSyntaxTrees(CSharpSyntaxTree.ParseText(code));
+        }
+
+        public static void RunAndSaveGeneration(this BenchmarkGeneration instance)
+        {
+            instance.CurrentDriver = instance.CurrentDriver.RunGenerators(instance.CurrentCompilation);
         }
 
         public static void RunGeneration(this BenchmarkGeneration instance)
         {
-            instance.Driver.RunGenerators(instance.Compilation);
+            instance.CurrentDriver.RunGenerators(instance.CurrentCompilation);
+        }
+
+        public static void Reset(this BenchmarkGeneration instance)
+        {
+            instance.CurrentCompilation = instance.StartingCompilation;
+            instance.CurrentDriver = instance.StartingDriver;
         }
 
         public static BenchmarkGeneration CreateGeneration(string source, IEnumerable<MetadataReference> references)
@@ -88,12 +98,7 @@ namespace Minerals.AutoInterfaces.Benchmarks.Utils
                 ));
 
             CSharpGeneratorDriver.Create(additional.ToArray())
-                .RunGeneratorsAndUpdateCompilation
-                (
-                    cSharpCmp,
-                    out var cmp,
-                    out _
-                );
+                .RunGeneratorsAndUpdateCompilation(cSharpCmp, out var cmp, out _);
 
             return new BenchmarkGeneration(CSharpGeneratorDriver.Create(targets.ToArray()), cmp);
         }
