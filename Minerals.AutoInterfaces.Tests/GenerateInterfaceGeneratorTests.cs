@@ -36,6 +36,32 @@ namespace Minerals.AutoInterfaces.Tests
         }
 
         [TestMethod]
+        public Task Attribute_ShouldGenerateCustomName()
+        {
+            const string source = """
+            using System;
+            using Minerals.AutoInterfaces;
+
+            namespace Minerals.Examples
+            {
+                [GenerateInterface("IExampleInterface")]
+                public class TestClass
+                {
+                    public int Property1 { get; set; }
+                    protected int Property2 {get; set; }
+                    internal int Property3 { get; set; }
+                    private int Property4 { get; set; }
+                }
+            }
+            """;
+            IIncrementalGenerator[] additional =
+            [
+                new GenerateInterfaceAttributeGenerator()
+            ];
+            return this.VerifyIncrementalGenerators(source, new GenerateInterfaceGenerator(), additional);
+        }
+
+        [TestMethod]
         public Task Properties_ShouldGenerateOnlyPublic()
         {
             const string source = """

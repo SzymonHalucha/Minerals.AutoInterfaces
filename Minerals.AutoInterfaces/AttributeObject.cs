@@ -1,9 +1,12 @@
+using System.Collections.Immutable;
+
 namespace Minerals.AutoInterfaces
 {
-    public readonly struct AttributeObject
+    public readonly struct AttributeObject : IEquatable<AttributeObject>
     {
         public string AccessModifier { get; }
         public string Name { get; }
+        public string CustomName { get; }
         public string Namespace { get; }
         public string[][] PublicMembers { get; }
         public string[] Usings { get; }
@@ -12,6 +15,7 @@ namespace Minerals.AutoInterfaces
         {
             AccessModifier = GetAccessModifierOf(context.TargetNode);
             Name = GetNameOf(context.TargetNode);
+            CustomName = GetCustomNameOf(context.Attributes);
             Namespace = GetNamespaceFrom(context.TargetNode);
             PublicMembers = GetPublicMembersFrom(context.TargetNode);
             Usings = GetUsingsFrom(context.TargetNode);
@@ -22,14 +26,25 @@ namespace Minerals.AutoInterfaces
             return obj is AttributeObject attrObj
             && attrObj.AccessModifier.Equals(AccessModifier)
             && attrObj.Name.Equals(Name)
+            && attrObj.CustomName.Equals(CustomName)
             && attrObj.Namespace.Equals(Namespace)
             && attrObj.PublicMembers.SequenceEqual(PublicMembers)
             && attrObj.Usings.SequenceEqual(Usings);
         }
 
+        public bool Equals(AttributeObject other)
+        {
+            return other.AccessModifier.Equals(AccessModifier)
+            && other.Name.Equals(Name)
+            && other.CustomName.Equals(CustomName)
+            && other.Namespace.Equals(Namespace)
+            && other.PublicMembers.SequenceEqual(PublicMembers)
+            && other.Usings.SequenceEqual(Usings);
+        }
+
         public override int GetHashCode()
         {
-            return HashCode.Combine(AccessModifier, Name, Namespace, PublicMembers, Usings);
+            return HashCode.Combine(AccessModifier, CustomName, Name, Namespace, PublicMembers, Usings);
         }
 
         private static string GetAccessModifierOf(SyntaxNode node)
@@ -46,6 +61,11 @@ namespace Minerals.AutoInterfaces
         private static string GetNameOf(SyntaxNode node)
         {
             return ((BaseTypeDeclarationSyntax)node).Identifier.ValueText;
+        }
+
+        private string GetCustomNameOf(ImmutableArray<AttributeData> attributes)
+        {
+            return attributes.First().ConstructorArguments.First().Value?.ToString() ?? string.Empty;
         }
 
         private static string GetNamespaceFrom(SyntaxNode from)

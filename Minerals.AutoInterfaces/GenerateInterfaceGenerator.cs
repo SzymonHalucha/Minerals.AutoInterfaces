@@ -14,7 +14,7 @@ namespace Minerals.AutoInterfaces
 
             context.RegisterSourceOutput(generates, static (ctx, element) =>
             {
-                string fileName = $"I{element.Name}.g.cs";
+                string fileName = element.CustomName != string.Empty ? $"{element.CustomName}.g.cs" : $"I{element.Name}.g.cs";
                 ctx.AddSource(fileName, GenerateInterface(element));
             });
         }
@@ -53,7 +53,8 @@ namespace Minerals.AutoInterfaces
 
         private static void AppendInterface(CodeBuilder builder, AttributeObject attrObj)
         {
-            builder.WriteLine(attrObj.AccessModifier).Write(" interface I").Write(attrObj.Name).OpenBlock();
+            var name = attrObj.CustomName != string.Empty ? attrObj.CustomName : $"I{attrObj.Name}";
+            builder.WriteLine(attrObj.AccessModifier).Write(" interface ").Write(name).OpenBlock();
         }
 
         private static void AppendPublicMembers(CodeBuilder builder, AttributeObject attrObj)
