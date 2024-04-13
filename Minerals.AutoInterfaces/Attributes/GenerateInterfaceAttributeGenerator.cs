@@ -23,7 +23,7 @@ namespace Minerals.AutoInterfaces.Attributes
                 [global::System.AttributeUsage(global::System.AttributeTargets.Class | global::System.AttributeTargets.Struct, AllowMultiple = false, Inherited = false)]
                 public sealed class GenerateInterfaceAttribute : global::System.Attribute
                 {
-                    public GenerateInterfaceAttribute(string customName = string.Empty)
+                    public GenerateInterfaceAttribute(string customName = "")
                     {
                     }
                 }
