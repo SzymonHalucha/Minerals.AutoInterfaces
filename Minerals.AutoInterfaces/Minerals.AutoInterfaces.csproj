@@ -11,7 +11,7 @@
     </PropertyGroup>
 
     <PropertyGroup>
-        <Version>0.1.4</Version>
+        <Version>0.1.5</Version>
         <Title>AutoInterfaces</Title>
         <Authors>Szymon Hałucha</Authors>
         <Product>AutoInterfaces</Product>
@@ -25,7 +25,7 @@
         <PackageProjectUrl>https://github.com/SzymonHalucha/Minerals.AutoInterfaces</PackageProjectUrl>
         <PackageTags>interface, interfaces, generator, source, code, generation, attribute</PackageTags>
         <PackageReadmeFile>README.md</PackageReadmeFile>
-        <PackageReleaseNotes>Support for the custom interfaces name</PackageReleaseNotes>
+        <PackageReleaseNotes>Fixed bug with the CodeBuilder enumeration methods</PackageReleaseNotes>
         <IsPackable>true</IsPackable>
     </PropertyGroup>
 

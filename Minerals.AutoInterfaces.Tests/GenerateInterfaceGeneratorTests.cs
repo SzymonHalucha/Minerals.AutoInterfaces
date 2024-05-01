@@ -437,5 +437,43 @@ namespace Minerals.AutoInterfaces.Tests
             ];
             return this.VerifyIncrementalGenerators(source, new GenerateInterfaceGenerator(), additional);
         }
+
+        [TestMethod]
+        public Task WithoutAnyUsings_ShouldGenerateWithNamespace()
+        {
+            const string source = """
+            namespace Minerals.Examples;
+
+            [Minerals.AutoInterfaces.GenerateInterface("IPerson")]
+            public class Person
+            {
+                public int ID
+                {
+                    get; set;
+                }
+                public string FirstName
+                {
+                    get; set;
+                }
+                public string LastName
+                {
+                    get; set;
+                }
+                public string Name
+                {
+                    get
+                    {
+                        return $"{FirstName} {LastName}";
+                    }
+                }
+                public string FullName() => $"{FirstName} {LastName}";
+            }
+            """;
+            IIncrementalGenerator[] additional =
+            [
+                new GenerateInterfaceAttributeGenerator()
+            ];
+            return this.VerifyIncrementalGenerators(source, new GenerateInterfaceGenerator(), additional);
+        }
     }
 }

@@ -1,9 +1,5 @@
 # Minerals.AutoInterfaces
 
-![GitHub License](https://img.shields.io/github/license/SzymonHalucha/Minerals.AutoInterfaces?style=for-the-badge&link=https%3A%2F%2Fgithub.com%2FSzymonHalucha%2FMinerals.AutoInterfaces%2F)
-![NuGet Version](https://img.shields.io/nuget/v/Minerals.AutoInterfaces?style=for-the-badge&link=https%3A%2F%2Fwww.nuget.org%2Fpackages%2FMinerals.AutoInterfaces%2F)
-![NuGet Downloads](https://img.shields.io/nuget/dt/Minerals.AutoInterfaces?style=for-the-badge&link=https%3A%2F%2Fwww.nuget.org%2Fpackages%2FMinerals.AutoInterfaces%2F)
-
 This NuGet package provides a functionality to automatically generate interfaces for C# classes with a single attribute. This simplifies the creation of interfaces for classes with clearly defined public members, without having to manually write interface code.
 
 ## Features
