@@ -13,11 +13,11 @@ namespace Minerals.AutoInterfaces.Utils
             _builder = builder;
         }
 
-        public CodeBuilder(int builderStartCapacity = 1024, int indentationSize = 4, int indentationLevel = 0)
+        public CodeBuilder(int indentationSize = 4, int indentationLevel = 0)
         {
             _indentationLevel = indentationLevel;
             _indentationSize = indentationSize;
-            _builder = new StringBuilder(builderStartCapacity);
+            _builder = new StringBuilder();
         }
 
         public CodeBuilder Write(string text)
