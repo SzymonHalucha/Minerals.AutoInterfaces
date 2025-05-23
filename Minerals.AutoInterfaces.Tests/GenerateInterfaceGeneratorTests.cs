@@ -1,3 +1,7 @@
+using System.Reflection;
+using Microsoft.CodeAnalysis;
+using Minerals.AutoInterfaces.Tests.Utils;
+using Minerals.AutoInterfaces.Attributes;
 
 namespace Minerals.AutoInterfaces.Tests
 {
@@ -265,7 +269,7 @@ namespace Minerals.AutoInterfaces.Tests
             {
                 [GenerateInterface]
                 public class TestClass
-                { 
+                {
                     public EventHandler? Event1 { get; set; }
                     public Action<int>? Event2 { get; set; }
                 }
@@ -395,7 +399,7 @@ namespace Minerals.AutoInterfaces.Tests
                 {
                     public static int Property1 { get; set; } = 1;
                     public int Property2 { get; set; } = 2;
-                    
+
                     public static event Action<int>? Event1;
                     public static int Field1 = 1;
 

@@ -1,3 +1,7 @@
+using System.Reflection;
+using Minerals.AutoInterfaces.Tests.Utils;
+using Minerals.AutoInterfaces.Attributes;
+
 namespace Minerals.AutoInterfaces.Tests.Attributes
 {
     [TestClass]

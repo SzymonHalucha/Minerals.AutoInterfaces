@@ -1,3 +1,5 @@
+using Microsoft.CodeAnalysis;
+
 namespace Minerals.AutoInterfaces.Benchmarks.Utils
 {
     public class BenchmarkGeneration

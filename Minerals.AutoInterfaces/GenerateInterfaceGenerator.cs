@@ -1,3 +1,9 @@
+using System.Reflection;
+using System.Text;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Microsoft.CodeAnalysis.Text;
+using Microsoft.CodeAnalysis;
+
 namespace Minerals.AutoInterfaces
 {
     [Generator]

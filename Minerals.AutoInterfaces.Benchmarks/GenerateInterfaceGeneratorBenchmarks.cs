@@ -1,4 +1,8 @@
-﻿namespace Minerals.AutoInterfaces.Benchmarks
+﻿using BenchmarkDotNet.Attributes;
+using Minerals.AutoInterfaces.Benchmarks.Utils;
+using Minerals.AutoInterfaces.Attributes;
+
+namespace Minerals.AutoInterfaces.Benchmarks
 {
     public class GenerateInterfaceGeneratorBenchmarks
     {
