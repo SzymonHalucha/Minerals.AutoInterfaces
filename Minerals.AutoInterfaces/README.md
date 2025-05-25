@@ -17,7 +17,7 @@ Add the Minerals.AutoInterfaces nuget package to your C# project using the follo
 ### 1. Project file definition
 
 ```xml
-<PackageReference Include="Minerals.AutoInterfaces" Version="0.1.6" />
+<PackageReference Include="Minerals.AutoInterfaces" Version="0.2.0" />
 ```
 
 ### 2. dotnet command

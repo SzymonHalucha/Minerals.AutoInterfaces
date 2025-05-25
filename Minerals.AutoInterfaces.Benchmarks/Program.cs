@@ -12,7 +12,7 @@ namespace Minerals.AutoInterfaces.Benchmarks
     {
         public static void Main()
         {
-            BenchmarkRunner.Run<GenerateInterfaceGeneratorBenchmarks>
+            BenchmarkRunner.Run<AutoInterfaceGeneratorBenchmarks>
             (
                 DefaultConfig.Instance
                     .WithOrderer(new DefaultOrderer(SummaryOrderPolicy.FastestToSlowest))
