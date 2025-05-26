@@ -2,12 +2,8 @@
 
 namespace Minerals.AutoInterfaces.Benchmarks
 {
-    public class AutoInterfaceGeneratorBenchmarks
+    public class GeneratorsBenchmark
     {
-        private BenchmarkGeneration _baseline = null!;
-        private BenchmarkGeneration _attributeGeneration = null!;
-        private BenchmarkGeneration _interfaceGeneration = null!;
-
         private const string _placebo = """
         using System;
 
@@ -117,39 +113,100 @@ namespace Minerals.AutoInterfaces.Benchmarks
         }
         """;
 
-        [GlobalSetup]
-        public void Initialize()
+        private const string _dumpCode = """
+        public class DumpClass0
         {
-            _baseline = new BenchmarkGeneration();
-            _baseline.SetSourceGenerators<AutoInterfaceAttributeGenerator>();
-            _baseline.AddSourceCode(_placebo);
-            _baseline.RunAndSaveGeneration();
+            public int Property1 { get; set; }
 
-            _attributeGeneration = new BenchmarkGeneration();
-            _attributeGeneration.SetSourceGenerators<AutoInterfaceAttributeGenerator>();
-            _attributeGeneration.AddSourceCode(_placebo);
+            public void Method1(int arg1, int arg2)
+            {
+                Console.WriteLine(arg1 + arg2);
+            }
+        }
+        """;
 
-            _interfaceGeneration = new BenchmarkGeneration();
-            _interfaceGeneration.SetSourceGenerators<AutoInterfaceAttributeGenerator, AutoInterfaceGenerator>();
-            _interfaceGeneration.AddSourceCode(_sample);
+        private GeneratorsObject _baselineGeneration = null!;
+        private GeneratorsObject _attributeGeneration = null!;
+        private GeneratorsObject _attributeSecondGeneration = null!;
+        private GeneratorsObject _interfaceGeneration = null!;
+        private GeneratorsObject _interfaceSecondGeneration = null!;
+        private GeneratorsObject _interfaceEditedSecondGeneration = null!;
+
+        [GlobalSetup(Target = nameof(BaselineGeneration))]
+        public void InitializeBaselineGeneration()
+        {
+            _baselineGeneration = GeneratorsObject.Create<AutoInterfaceAttributeGenerator, AutoInterfaceGenerator>(_placebo);
+            _baselineGeneration.RunAndSaveGenerators();
+        }
+
+        [GlobalSetup(Target = nameof(AttributeGeneration))]
+        public void InitializeAttributeGeneration()
+        {
+            _attributeGeneration = GeneratorsObject.Create<AutoInterfaceAttributeGenerator, AutoInterfaceGenerator>(_placebo);
+        }
+
+        [GlobalSetup(Target = nameof(AttributeSecondGeneration))]
+        public void InitializeAttributeSecondGeneration()
+        {
+            _attributeSecondGeneration = GeneratorsObject.Create<AutoInterfaceAttributeGenerator, AutoInterfaceGenerator>(_placebo);
+            _attributeSecondGeneration.RunAndSaveGenerators();
+        }
+
+        [GlobalSetup(Target = nameof(InterfaceGeneration))]
+        public void InitializeInterfaceGeneration()
+        {
+            _interfaceGeneration = GeneratorsObject.Create<AutoInterfaceGenerator, AutoInterfaceAttributeGenerator>(_sample);
+        }
+
+        [GlobalSetup(Target = nameof(InterfaceSecondGeneration))]
+        public void InitializeInterfaceSecondGeneration()
+        {
+            _interfaceSecondGeneration = GeneratorsObject.Create<AutoInterfaceGenerator, AutoInterfaceAttributeGenerator>(_sample);
+            _interfaceSecondGeneration.RunAndSaveGenerators();
+        }
+
+        [GlobalSetup(Target = nameof(InterfaceSecondGenerationWithDumpCode))]
+        public void InitializeInterfaceSecondGenerationWithDumpCode()
+        {
+            _interfaceEditedSecondGeneration = GeneratorsObject.Create<AutoInterfaceGenerator, AutoInterfaceAttributeGenerator>(_sample);
+            _interfaceEditedSecondGeneration.RunAndSaveGenerators();
+            _interfaceEditedSecondGeneration.AddSourceCode(_dumpCode);
         }
 
         [Benchmark(Baseline = true)]
         public void BaselineGeneration()
         {
-            _baseline.RunGeneration();
+            _baselineGeneration.RunGenerators();
         }
 
         [Benchmark]
-        public void AttributeOnlyGeneration()
+        public void AttributeGeneration()
         {
-            _attributeGeneration.RunGeneration();
+            _attributeGeneration.RunGenerators();
         }
 
         [Benchmark]
-        public void InterfaceOnlyGeneration()
+        public void AttributeSecondGeneration()
         {
-            _interfaceGeneration.RunGeneration();
+            _attributeSecondGeneration.RunGenerators();
+        }
+
+        [Benchmark]
+        public void InterfaceGeneration()
+        {
+            _interfaceGeneration.RunGenerators();
+        }
+
+        [Benchmark]
+        public void InterfaceSecondGeneration()
+        {
+            _interfaceSecondGeneration.RunGenerators();
+        }
+
+        [Benchmark]
+        public void InterfaceSecondGenerationWithDumpCode()
+        {
+            _interfaceEditedSecondGeneration.RunGenerators();
         }
     }
 }

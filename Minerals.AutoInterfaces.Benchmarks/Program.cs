@@ -1,6 +1,7 @@
 using BenchmarkDotNet.Environments;
 using BenchmarkDotNet.Diagnosers;
 using BenchmarkDotNet.Validators;
+using BenchmarkDotNet.Exporters;
 using BenchmarkDotNet.Running;
 using BenchmarkDotNet.Configs;
 using BenchmarkDotNet.Order;
@@ -12,15 +13,15 @@ namespace Minerals.AutoInterfaces.Benchmarks
     {
         public static void Main()
         {
-            BenchmarkRunner.Run<AutoInterfaceGeneratorBenchmarks>
-            (
-                DefaultConfig.Instance
-                    .WithOrderer(new DefaultOrderer(SummaryOrderPolicy.FastestToSlowest))
-                    .AddJob(Job.Default.WithRuntime(CoreRuntime.Core80))
-                    .AddJob(Job.Default.WithRuntime(CoreRuntime.Core90))
-                    .AddValidator(JitOptimizationsValidator.FailOnError)
-                    .AddDiagnoser(MemoryDiagnoser.Default)
-            );
+            var config = DefaultConfig.Instance
+                .WithOrderer(new DefaultOrderer(SummaryOrderPolicy.FastestToSlowest))
+                .AddJob(Job.Default.WithRuntime(CoreRuntime.Core80))
+                .AddJob(Job.Default.WithRuntime(CoreRuntime.Core90))
+                .AddValidator(JitOptimizationsValidator.FailOnError)
+                .AddDiagnoser(MemoryDiagnoser.Default)
+                .AddExporter(MarkdownExporter.GitHub);
+
+            BenchmarkRunner.Run<GeneratorsBenchmark>(config);
         }
     }
 }
