@@ -26,54 +26,75 @@ Add the Minerals.AutoInterfaces nuget package to your C# project using the follo
 dotnet add package Minerals.AutoInterfaces
 ```
 
-## Usage
+## Changes in ``0.2.0`` version
 
-To use the package, add the ```[GenerateInterface]``` attribute to the selected class.
+The new name for the marker attribute is ``Minerals.AutoInterfaces.AutoInterface``
 
 ```csharp
-namespace Examples
+// OLD MARKER ATTRIBUTE NAME - v0.1.6
+[Minerals.AutoInterfaces.GenerateInterface]
+public class TestClass
 {
-    [Minerals.AutoInterfaces.GenerateInterface]
-    public class ExampleClass
+    public int Property1 { get; set; }
+}
+
+// NEW MARKER ATTRIBUTE NAME - v0.2.0
+[Minerals.AutoInterfaces.AutoInterface]
+public class TestClass
+{
+    public int Property1 { get; set; }
+}
+```
+
+## Usage
+
+To use the package, add the ``[AutoInterface]`` marker attribute to the selected class or struct.
+
+```csharp
+using System;
+
+namespace TestNamespace
+{
+    [Minerals.AutoInterfaces.AutoInterface]
+    public class TestClass
     {
-        public int Property1 { get; set; } = 1;
-        public int Property2 { get; private set; } = 2;
-        public int Property3
+        public int Property1 { get; set; }
+        public int Property2 { get; private set; }
+        protected int Property3 { get; set; }
+        public event Action? Event1;
+
+        public void Method1()
         {
-            get { return _field1; }
-            set { _field1 = value; }
+            Console.WriteLine("Hello World");
         }
 
-        private int _field1 = 0;
-
-        public int Method1(int arg0, int arg1)
+        public void Method2(int arg)
         {
-            return arg0 + arg1;
+            Console.WriteLine(arg);
         }
 
-        public void Method2<T>(T arg0) where T : class, new()
+        public bool Method3<T0, T1>(T0 arg0, T1 arg1) where T0 : IEquatable<T1> where T1 : IEquatable<T0>
         {
-            return $"{arg0}";
+            return arg0.Equals(arg1);
         }
-
-        protected void Method3() { }
     }
 }
 ```
 
-The code above will generate the ```IExampleClass.g.cs``` file with the ```IExampleClass``` interface.
+The code above will generate the ``ITestClass.g.cs`` file with the ``ITestClass`` interface.
 
 ```csharp
-namespace Examples
+namespace global::TestNamespace
 {
     [global::System.Runtime.CompilerServices.CompilerGenerated]
-    public interface IExampleClass
+    public interface ITestClass
     {
         int Property1 { get; set; }
         int Property2 { get; }
-        int Property3 { get; set; }
-        int Method1(int arg0, int arg1);
-        string Method2<T>(T arg0) where T : class, new();
+        event Action? Event1;
+        void Method1();
+        void Method2(int arg);
+        bool Method3<T0, T1>(T0 arg0, T1 arg1) where T0 : global::System.IEquatable<T1> where T1 : global::System.IEquatable<T0>;
     }
 }
 ```
@@ -81,23 +102,23 @@ namespace Examples
 ### Package supports custom interface names
 
 ```csharp
-namespace Examples
+namespace TestNamespace
 {
-    [Minerals.AutoInterfaces.GenerateInterface("ExampleInterface")]
-    public class ExampleClass
+    [Minerals.AutoInterfaces.AutoInterface("ITestInterface")]
+    public class TestClass
     {
         public int Property1 { get; protected set; } = 1;
     }
 }
 ```
 
-The code above will generate the ```ExampleInterface.g.cs``` file with the ```ExampleInterface``` interface.
+The code above will generate the ``ITestInterface.g.cs`` file with the ``ITestInterface`` interface.
 
 ```csharp
-namespace Examples
+namespace global::TestNamespace
 {
     [global::System.Runtime.CompilerServices.CompilerGenerated]
-    public interface ExampleInterface
+    public interface ITestInterface
     {
         int Property1 { get; }
     }
